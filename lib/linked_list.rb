@@ -18,6 +18,7 @@ class LinkedList
     @head.nil? ? @head = node : @tail.next_node = node
     @tail = node
     @size += 1
+    node
   end
 
   def prepend(value)
@@ -25,6 +26,7 @@ class LinkedList
     @head.nil? ? @tail = node : node.next_node = @head
     @head = node
     @size += 1
+    node
   end
 
   def at(index)
@@ -47,7 +49,7 @@ class LinkedList
     else
       @head = @tail = nil
     end
-    @size -= 1
+    @size -= 1 unless @size.zero?
     node
   end
 
@@ -75,6 +77,29 @@ class LinkedList
       node = node.next_node
     end
     (str_ary << 'nil').join
+  end
+
+  def insert_at(value, index)
+    return prepend(value) if index.zero?
+
+    (1..@size).include?(index) ? node = node(value) : (return nil)
+    node.next_node = at(index)
+    at(index - 1).next_node = node
+    @size += 1
+    node
+  end
+
+  def remove_at(index)
+    if (node = at(index))
+      if index.zero?
+        @head = @tail = nil if @size.zero?
+        @head = at(index + 1)
+      else
+        at(index - 1).next_node = at(index + 1)
+      end
+      @size -= 1
+    end
+    node
   end
 
   private
