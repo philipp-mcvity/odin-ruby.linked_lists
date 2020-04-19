@@ -39,6 +39,44 @@ class LinkedList
     nil
   end
 
+  def pop
+    node = @tail
+    if @size > 1
+      @tail = at(@size - 2)
+      @tail.next_node = nil
+    else
+      @head = @tail = nil
+    end
+    @size -= 1
+    node
+  end
+
+  def contains?(value)
+    node = @head
+    @size.times do
+      node.value == value ? (return true) : node = node.next_node
+    end
+    false
+  end
+
+  def find(value)
+    node = @head
+    @size.times do |index|
+      node.value == value ? (return index) : node = node.next_node
+    end
+    nil
+  end
+
+  def to_s
+    node = @head
+    str_ary = []
+    @size.times do
+      str_ary << "( #{node.value} ) -> "
+      node = node.next_node
+    end
+    (str_ary << 'nil').join
+  end
+
   private
 
   def index_valid?(index)
